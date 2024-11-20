@@ -6,7 +6,7 @@
 /*   By: brdani <brdani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 04:45:02 by brdani            #+#    #+#             */
-/*   Updated: 2024/11/20 10:37:01 by brdani           ###   ########.fr       */
+/*   Updated: 2024/11/20 11:34:28 by brdani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	stash = read_line(fd, stash);
+	stash = read_fd(fd, stash);
 	if (!stash)
 		return (NULL);
-	// extract depuis le buffer sur une ligne
+	line = extract_line(stash);
 	// tout nettoyer et free 
 	return (line);
 }
@@ -36,7 +36,7 @@ char	*ft_join_free(char *stash, char *buffer)
 	return (tmp);
 }
 
-char	*read_line(int fd, char *stash)
+char	*read_fd(int fd, char *stash)
 {
 	char	*buffer;
 	int		bt;
@@ -61,5 +61,29 @@ char	*read_line(int fd, char *stash)
 	}
 	free (buffer);
 	return (stash);
+}
+
+char	*extract_line(char *stash)
+{
+	int		i;
+	char	*str;
+
+	if (!stash[i])
+		return (NULL);
+	while (stash[i] != '\n')
+		i++;
+	str = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	while (stash[i] != '\n')
+	{
+		str[i] = stash[i];
+		i++;
+	}
+	if (stash[i] == '\n')
+	{
+		str[i] = '\n';
+		i++;
+	}
+	return (str);
 }
 
