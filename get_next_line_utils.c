@@ -6,7 +6,7 @@
 /*   By: brdani <brdani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:07:33 by brdani            #+#    #+#             */
-/*   Updated: 2024/11/16 06:40:13 by brdani           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:23:32 by brdani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,41 @@ char	*ft_strchr(const char *s, int c)
 	if (uc == '\0')
 		return ((char *)s);
 	return (NULL);
+}
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
+}
+void	*ft_memset(void *str, int c, size_t size)
+{
+	unsigned char	*s;
+
+	s = (unsigned char *)str;
+	while (size)
+	{
+		*s = (unsigned char)c;
+		s++;
+		size--;
+	}
+	return (str);
+}
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (size == 0)
+		return (ft_strlen(src));
+	while (dst[i] != '\0' && i < size)
+		i++;
+	j = i;
+	while (src[i - j] != '\0' && i < size - 1)
+	{
+		dst[i] = src[i - j];
+		i++;
+	}
+	if (j < size)
+		dst[i] = '\0';
+	return (j + ft_strlen(src));
 }
