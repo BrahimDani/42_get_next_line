@@ -6,7 +6,7 @@
 /*   By: brdani <brdani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 08:14:43 by brdani            #+#    #+#             */
-/*   Updated: 2024/11/21 13:23:47 by brdani           ###   ########.fr       */
+/*   Updated: 2024/11/22 14:14:36 by brdani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 9
 # endif
 
 char			*get_next_line(int fd);

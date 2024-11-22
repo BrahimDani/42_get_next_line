@@ -6,7 +6,7 @@
 /*   By: brdani <brdani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 04:45:02 by brdani            #+#    #+#             */
-/*   Updated: 2024/11/21 13:39:49 by brdani           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:13:35 by brdani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*read_fd(int fd, char *stash)
 	char	*buffer;
 	int		bt;
 
+	// !calloc
+	
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buffer == NULL)
 		return (NULL);
@@ -53,18 +55,19 @@ char	*extract_line(char *stash)
 	int		i;
 	char	*str;
 
+	i = 0;
 	if (!stash[i])
 		return (NULL);
-	while (stash[i] != '\n')
+	while (stash[i] && stash[i] != '\n')
 		i++;
 	str = ft_calloc(i + 2, sizeof(char));
 	i = 0;
-	while (stash[i] != '\n')
+	while (stash[i] && stash[i] != '\n')
 	{
 		str[i] = stash[i];
 		i++;
 	}
-	if (stash[i] == '\n')
+	if (stash[i] && stash[i] == '\n')
 	{
 		str[i] = '\n';
 		i++;
@@ -78,14 +81,16 @@ char	*clean_line(char *stash)
 	int		j;
 	char	*str;
 
-	while (stash[i] != '\n')
+	i = 0;
+	j = 0;
+	while (stash[i] && stash[i] != '\n')
 		i++;
-	if (!stash[i])
+	if (!stash[i] || (stash[i] == '\n' && !stash[i + 1]))
 	{
 		free (stash);
 		return (NULL);
 	}
-	str = calloc(ft_strlen(stash) - i + 1, sizeof(char));
+	str = ft_calloc(ft_strlen(stash) - i + 1, sizeof(char));
 	while (stash[++i])
 		str[j++] = stash[i];
 	str[j] = '\0';
@@ -99,6 +104,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
+	if (!stash)
+		stash = ft_calloc(1, (sizeof(char)));
 	stash = read_fd(fd, stash);
 	if (!stash)
 		return (NULL);
@@ -106,18 +113,32 @@ char	*get_next_line(int fd)
 	stash = clean_line(stash);
 	return (line);
 }
+
 int	main(void)
+{
+	int	fd;
+	char	*line;
+
+	fd = 0;
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+}
+/*int	main(void)
 {
 	int		fd;
 	char	*line;
+	int		i;
 
+	i = 0;
 	fd = open("test.txt", O_RDONLY);
-	line = get_next_line(fd);
-	while (line)
+	while (i < 4)
 	{
-		printf("%s\n", line);
-		free(line);
 		line = get_next_line(fd);
+		printf("%s", line);
+		free(line);
+		i++;
 	}
 	return (0);
 }
+*/
