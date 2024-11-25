@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brdani <brdani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 04:45:02 by brdani            #+#    #+#             */
-/*   Updated: 2024/11/25 17:43:45 by brdani           ###   ########.fr       */
+/*   Created: 2024/11/25 17:50:16 by brdani            #+#    #+#             */
+/*   Updated: 2024/11/25 17:53:09 by brdani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_join_free(char *stash, char *buffer)
 {
@@ -100,17 +100,17 @@ char	*clean_line(char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd < 0 || fd > 1024 || BUFFER_SIZE < 0)
 		return (NULL);
-	if (!stash)
-		stash = ft_calloc(1, (sizeof(char)));
-	stash = read_fd(fd, stash);
-	if (!stash)
+	if (!stash[fd])
+		stash[fd] = ft_calloc(1, (sizeof(char)));
+	stash[fd] = read_fd(fd, stash[fd]);
+	if (!stash[fd])
 		return (NULL);
-	line = extract_line(stash);
-	stash = clean_line(stash);
+	line = extract_line(stash[fd]);
+	stash[fd] = clean_line(stash[fd]);
 	return (line);
 }
